@@ -1,0 +1,215 @@
+<Backgroud@FloatLayout>:
+    canvas:
+        Color:
+            rgb: 0, 0.6, 0.5
+            #rgb: 0.8, 0.8, 0.8
+        Ellipse:
+            pos: -300, root.height-300
+            size: 600, 600
+            angle_start: 90
+            angle_end: 180
+        Ellipse:
+            pos: root.width-300, (root.height/1.9)-300
+            size: 600, 600
+            angle_start: 180
+            angle_end: 360
+        Ellipse:
+            pos: root.width*0.02, root.height*0.03
+            size: 600, 600
+            angle_start: 0
+            angle_end: 360
+<MDMyButtton@MDFillRoundFlatButton>:
+    size_hint_x: 0.8
+    font_size: 24
+    pos_hint: {"center_x" : 0.5, "center_y": 0.5}
+<MDTitleLabel@MDLabel>:
+    halign: 'center'
+    size_hint_y: None
+    height: self.texture_size[1]
+    padding_y: 15
+    font_size: 96
+<MDMyLabel@MDLabel>:
+    halign: 'center'
+    size_hint_y: None
+    height: self.texture_size[1]
+    padding_y: 15
+    font_size: 48
+<MDMyMDTextField@MDTextField>:
+    size_hint_x: 0.8
+    font_size: 48
+    pos_hint: {'center_x': 0.5}
+<Space@BoxLayout>:
+    orientation: 'vertical'
+<MyMDDropDownItem@MDDropDownItem>:
+    size_hint: None, None
+<WelcomeScreen>:
+    Backgroud:
+    MDMyCard:
+        size_hint: None, None
+        size: 750, 450
+        orientation: 'vertical'
+        MyBoxLayout:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            orientation: 'vertical'
+            MDTitleLabel:
+                text: app.LangWords["Welcome"]
+                markup: True
+            MDMyMDTextField:
+                id:name
+                hint_text: app.LangWords["Name"]
+            MDMyButtton:
+                text: app.LangWords["Next"]
+                on_release: app.NextMain()
+<MainScreen>:
+    Backgroud:
+    MyBoxLayout:
+        orientation: 'vertical'
+        MDTitleLabel:
+            id: welcome
+            markup: True
+        MyBoxLayout:
+            orientation: 'horizontal'
+            ScrollView:
+                size: self.size
+                do_scroll_x: True
+                do_scroll_y: False
+                MyBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: None
+                    height: self.minimum_height
+                    width: self.minimum_width
+                    id:scroll
+        MDMyCard:
+            id: datatable
+        MyBoxLayout:
+            size_hint_y: 0.35
+            orientation: 'horizontal'
+            MDMyCard:
+                MDMyLabel:
+                    id: money
+            MDMyCard:
+                orientation: 'vertical'
+                MyBoxLayout:
+                    padding: 0
+                    orientation: 'vertical'
+                    MDMyButtton:
+                        text: app.LangWords["RegistrerThemes"]
+                        on_release: app.changeToScreen("registrer_theme")
+                    MDMyButtton:
+                        text: app.LangWords["RegistrerAction"]
+                        on_release: app.changeToScreen("registrer_action")
+                    MDMyButtton:
+                        text: "Settings"
+                        on_release: app.changeToScreen("Settings")
+<CreateCategory>:
+    Backgroud:
+    MyBoxLayout:
+        orientation: 'vertical'
+        MDTitleLabel:
+            id: title
+            text: app.LangWords["CreateFirstCard"]
+        MDMyCard:
+            orientation: 'vertical'
+            MDMyMDTextField:
+                id: category
+                hint_text: app.LangWords["NameCard"]
+            MDSlider:
+                id: percentage
+                size_hint_y: None
+                min: 1
+                max: 100
+                step: 1
+            MDMyLabel:
+                id: info
+        MDMyCard:
+            orientation: 'horizontal'
+            MyBoxLayout:
+                orientation: 'horizontal'
+                id: buttons
+                MDMyButtton:
+                    text: app.LangWords["Cancel"]
+                    on_release: app.changeToScreen("main_screen", "right")
+<RegristerThemes>:
+    Backgroud:
+    MyBoxLayout:
+        orientation: 'vertical'
+        MDMyCard:
+            size_hint_y: 0.25
+            orientation: 'horizontal'
+            MyBoxLayout:
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                orientation: 'horizontal'
+                MDMyMDTextField:
+                    id:name
+                    size_hint_x: 0.2
+                    hint_text: app.LangWords["Name"]
+                MDBasicLabel:
+                    size_hint: None,None
+                    text: ":"
+                MDDropDownItem:
+                    id: drop_item
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: app.LangWords["Add"]
+                    on_release: app.MoneyEditTopics.open()
+        MDMyCard:
+            id: datatable
+        MDMyCard:
+            size_hint_y: 0.25
+            orientation: 'horizontal'
+            MyBoxLayout:
+                orientation: 'vertical'
+                MDMyButtton:
+                    text: app.LangWords["AddTheme"]
+                    on_release: app.AddTheme()
+                MDMyButtton:
+                    text: app.LangWords["DeleteTheme"]
+                    on_release: app.RemoveTheme()
+                MDMyButtton:
+                    text: app.LangWords["Cancel"]
+                    on_release: app.changeToScreen("main_screen", "right")
+<RegristerAction>:
+    Backgroud:
+    MyBoxLayout:
+        orientation: 'vertical'
+        MDMyCard:
+            orientation: 'vertical'
+            MDMyMDTextField:
+                id:name
+                hint_text: app.LangWords["Name"]
+            MDMyMDTextField:
+                id:description
+                multiline: True
+                hint_text: app.LangWords["Description"]
+            MyBoxLayout:
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                orientation: 'horizontal'
+                MDMyMDTextField:
+                    id:amount
+                    size_hint_x: 0.2
+                    hint_text: app.LangWords["Amount"] + "(0)"
+                MDBasicLabel:
+                    size_hint: None,None
+                    text: ":"
+                MyBoxLayout:
+                    orientation: 'vertical'
+                    MyMDDropDownItem:
+                        id: drop_item
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        text: app.LangWords["Other"]
+                        on_release: app.MoneyTopics.open()
+                    MyMDDropDownItem:
+                        id: drop_item_category
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        text: app.LangWords["Category"]
+                        on_release: app.MoneyCategorys.open()
+        MDMyCard:
+            size_hint_y: 0.25
+            orientation: 'vertical'
+            MDMyButtton:
+                text: app.LangWords["DoAction"]
+                on_release: app.MakeAction()
+            MDMyButtton:
+                text: app.LangWords["Cancel"]
+                on_release: app.changeToScreen("main_screen", "right")
+<SettingsScreen>:
+    
