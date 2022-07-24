@@ -57,6 +57,13 @@ def NumberColorDatable(number):
         return ("arrow-down", [1, 0, 0, 1], str(number))
     else:
         return ("set-center", [1, 1, 1, 1], str(number))
+def ColorTitleDatable(Title):
+    if Title[1] == True:
+        return ("arrow-up", [0, 1, 0, 1], str(Title[0]))
+    elif Title[1] == False:
+        return ("arrow-down", [1, 0, 0, 1], str(Title[0]))
+    else:
+        return ("set-center", [1, 1, 1, 1], str(Title[0]))
 def PrettyDate():
     ActualYear = time.strftime("%y")
     ActualMonth = time.strftime("%m")
@@ -286,8 +293,9 @@ class MainApp(MDApp):
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             column_data = [
                 ("ID", dp(5)),
-                (self.LangWords["Category"], dp(30)),
-                (self.LangWords["Amount"], dp(30)),
+                (self.LangWords["Category"], dp(20)),
+                (self.LangWords["Title"], dp(20)),
+                (self.LangWords["Amount"], dp(20)),
             ],
             rows_num = rowsNumAmount,
         )
@@ -312,7 +320,9 @@ class MainApp(MDApp):
                 temp = NumberColorDatable(-float(i["Amount"]))
             else:
                 temp = NumberColorDatable(float(i["Amount"]))
-            self.ListActionsMoneyDatatable.append((i["ID"], "all" if not i["Category"] else i["Category"][0], temp))
+            self.ListActionsMoneyDatatable.append((i["ID"], ColorTitleDatable(i["Title"]), "all" if not i["Category"] else i["Category"][0], temp))
+        if len(self.ListActionsMoneyDatatable) == 1:
+            self.ListActionsMoneyDatatable.append(("", "", "", ""))
         self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
 
         #Buttons
@@ -619,7 +629,16 @@ class MainApp(MDApp):
                 temp = NumberColorDatable(-float(Action["Amount"]))
             else:
                 temp = NumberColorDatable(float(Action["Amount"]))
-            self.ListActionsMoneyDatatable.insert(0, (Action["ID"], "all" if not Action["Category"] else Action["Category"][0], temp))
+            TupleAction = (Action["ID"], ColorTitleDatable(Action["Title"]), "all" if not Action["Category"] else Action["Category"][0], temp)
+            if len(self.ListActionsMoneyDatatable) == 0:
+                self.ListActionsMoneyDatatable.append(TupleAction)
+                self.ListActionsMoneyDatatable.append(("", "", "", ""))
+            elif len(self.ListActionsMoneyDatatable) == 2:
+                temp1 = self.ListActionsMoneyDatatable[0]
+                self.ListActionsMoneyDatatable[1] = temp1
+                self.ListActionsMoneyDatatable[0] = TupleAction
+            else:
+                self.ListActionsMoneyDatatable.insert(0, TupleAction)
             self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
     def UnmakeLastAction(self):
         pass
