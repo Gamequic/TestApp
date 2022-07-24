@@ -37,7 +37,8 @@
         "RemoveMoney": "Quitar dinero",
         "All": "Todos",
         "Settings": "Configuraciones",
-        "Title": "Titulo"
+        "Title": "Titulo",
+        "SeeCurrents": "Ver acciones"
     },
 "ENG": 
     {
@@ -77,6 +78,7 @@
         "RemoveMoney": "Remove money",
         "All": "All",
         "Settings": "Settings",
-        "Title": "Title"
+        "Title": "Title",
+        "SeeCurrents": "Watch currents"
     }
 }

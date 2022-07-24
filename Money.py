@@ -18,6 +18,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.datatables import MDDataTable
 import time
 import json
+import os
 
 #Fechas y numeros de colores
 def GetActualTime():
@@ -286,6 +287,11 @@ class MainApp(MDApp):
             caller=self.sm.get_screen("registrer_action").ids.drop_item_category,
             width_mult=4,
         )
+        self.CurrentMenu = MDDropdownMenu(
+            caller=self.sm.get_screen("main_screen").ids.drop_item,
+            width_mult=4,
+        )
+        self.menu_items_current = []
 
         #Datatable
         rowsNumAmount = 25
@@ -313,7 +319,7 @@ class MainApp(MDApp):
         )
         self.sm.get_screen("registrer_theme").ids.datatable.add_widget(self.EditTitleTable)
 
-        #Cargar historial
+        #Cargar historial y CurrentMenu
         self.ListActionsMoneyDatatable = []
         for i in reversed(self.ListActionsMoney):
             if i["Title"][1] == False:
@@ -321,6 +327,12 @@ class MainApp(MDApp):
             else:
                 temp = NumberColorDatable(float(i["Amount"]))
             self.ListActionsMoneyDatatable.append((i["ID"], ColorTitleDatable(i["Title"]), "all" if not i["Category"] else i["Category"][0], temp))
+            self.menu_items_current.append({
+                "text": str(i["ID"]),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=i: self.WatchCurrent(x),
+            })
+        self.CurrentMenu.items = self.menu_items_current
         if len(self.ListActionsMoneyDatatable) == 1:
             self.ListActionsMoneyDatatable.append(("", "", "", ""))
         self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
@@ -423,6 +435,11 @@ class MainApp(MDApp):
         else:
             Welcome.text = self.LangWords["Night"] + self.UserName
         Total.text = f"Total: {self.TotalMoney}"
+    def WatchCurrent(self, x):
+        self.showWaring(str(x))
+        os.mkdir("/storage/emulated/0")
+        print(x)
+        self.CurrentMenu.dismiss()
     def ReloadCardCategorys(self):
         try:
             for i in self.ListCategoryCards:
@@ -445,7 +462,7 @@ class MainApp(MDApp):
             except:
                 pass
             for i in self.Categorys:
-                ActualCard = CategoryCard(CategoryName=i[0], Percentage=str(i[1])+"%", Amount=str(i[2])+"$", indexNum=str(num))
+                ActualCard = CategoryCard(CategoryName=i[0], Percentage=str(i[1])+"%", Amount=str(round(float(i[2]), 2))+"$", indexNum=str(num))
                 num = num + 1
                 self.ListCategoryCards.append(ActualCard)
                 self.sm.get_screen("main_screen").ids.scroll.add_widget(ActualCard)
@@ -640,6 +657,14 @@ class MainApp(MDApp):
             else:
                 self.ListActionsMoneyDatatable.insert(0, TupleAction)
             self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
+
+            #Agregar al currentmenu
+            self.menu_items_current.insert(0, {
+                "text": str(Action["ID"]),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=Action: self.WatchCurrent(x),
+            })
+            self.CurrentMenu.items = self.menu_items_current
     def UnmakeLastAction(self):
         pass
     #RegistrerThemes

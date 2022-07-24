@@ -80,7 +80,14 @@
                     width: self.minimum_width
                     id:scroll
         MDMyCard:
-            id: datatable
+            orientation: "vertical"
+            BoxLayout:
+                id: datatable
+            MDDropDownItem:
+                id: drop_item
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: app.LangWords["SeeCurrents"]
+                on_release: app.CurrentMenu.open()
         MyBoxLayout:
             size_hint_y: 0.35
             orientation: 'horizontal'
@@ -228,6 +235,7 @@
                 text: app.LangWords["Cancel"]
                 on_release: app.changeToScreen("main_screen", "right")
 <SettingsScreen>:
+    Backgroud:
     MDMyCard:
         size_hint_y: 0.25
         orientation: 'vertical'
