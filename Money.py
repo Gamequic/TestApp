@@ -50,6 +50,13 @@ def NumberColor(number):
         return f"[color=#0ee619]{number}[/color]"
     else: 
         return f"[color=#0d88e0]{number}[/color]"
+def NumberColorDatable(number):
+    if number > 0:
+        return ("arrow-up", [0, 1, 0, 1], str(number))
+    elif number < 0:
+        return ("arrow-down", [1, 0, 0, 1], str(number))
+    else:
+        return ("set-center", [1, 1, 1, 1], str(number))
 def PrettyDate():
     ActualYear = time.strftime("%y")
     ActualMonth = time.strftime("%m")
@@ -115,7 +122,7 @@ class MDBasicLabel(MDLabel):
         super().__init__(**kwargs)
         self.font_size= 48
         self.halign= 'center'
-class MDMyLabel(MDLabel):
+class MDMyLabel(MDBasicLabel):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint_y= None
@@ -298,6 +305,16 @@ class MainApp(MDApp):
         )
         self.sm.get_screen("registrer_theme").ids.datatable.add_widget(self.EditTitleTable)
 
+        #Cargar historial
+        self.ListActionsMoneyDatatable = []
+        for i in reversed(self.ListActionsMoney):
+            if i["Title"][1] == False:
+                temp = NumberColorDatable(-float(i["Amount"]))
+            else:
+                temp = NumberColorDatable(float(i["Amount"]))
+            self.ListActionsMoneyDatatable.append((i["ID"], "all" if not i["Category"] else i["Category"][0], temp))
+        self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
+
         #Buttons
         self.CreatorButton = MDMyButtton(
             text= self.LangWords["CreateCategory"]
@@ -380,7 +397,7 @@ class MainApp(MDApp):
             "viewclass": "OneLineListItem",
             "on_release": lambda x=False: self.EditCategoryCallback(x),
         })
-        self.actualCategory = [False]
+        self.actualCategory = False
         self.MoneyCategorys.items = menu_items_categorys
     #MainScreen
     def MainScreenEnter(self, instance=""):
@@ -564,7 +581,6 @@ class MainApp(MDApp):
                 "PrettyDate": PrettyDate(),
                 "PrettyTime": PrettyTime(),
             }
-            print(Action)
             self.ListActionsMoney.append(Action)
             SaveData({"Current": self.ListActionsMoney}, self.Current)
 
@@ -597,6 +613,14 @@ class MainApp(MDApp):
             NextID = NextID + 1
             SaveData({"NextID": NextID}, self.Current)
             self.changeToScreen("main_screen", "right")
+
+            #Agregar a la tabla
+            if Action["Title"][1] == False:
+                temp = NumberColorDatable(-float(Action["Amount"]))
+            else:
+                temp = NumberColorDatable(float(Action["Amount"]))
+            self.ListActionsMoneyDatatable.insert(0, (Action["ID"], "all" if not Action["Category"] else Action["Category"][0], temp))
+            self.EditCostumersTable.row_data = self.ListActionsMoneyDatatable
     def UnmakeLastAction(self):
         pass
     #RegistrerThemes
@@ -615,7 +639,6 @@ class MainApp(MDApp):
             SaveData({"Themes": self.Themes}, self.Database)
             self.UploadThemes()
     def RemoveTheme(self):
-        print(self.EditTitleTable.get_row_checks())
         for a in self.Themes:
             for b in self.EditTitleTable.get_row_checks():
                 if a[0] == b[0]:

@@ -192,16 +192,32 @@
                     text: ":"
                 MyBoxLayout:
                     orientation: 'vertical'
-                    MyMDDropDownItem:
-                        id: drop_item
-                        pos_hint: {'center_x': .5, 'center_y': .5}
-                        text: app.LangWords["Other"]
-                        on_release: app.MoneyTopics.open()
-                    MyMDDropDownItem:
-                        id: drop_item_category
-                        pos_hint: {'center_x': .5, 'center_y': .5}
-                        text: app.LangWords["Category"]
-                        on_release: app.MoneyCategorys.open()
+                    MyBoxLayout:
+                        orientation: 'horizontal'
+                        MDBasicLabel:
+                            size_hint: None,None
+                            text: app.LangWords["Title"]
+                        MDBasicLabel:
+                            size_hint: None,None
+                            text: ":"
+                        MyMDDropDownItem:
+                            id: drop_item
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            text: app.LangWords["Other"]
+                            on_release: app.MoneyTopics.open()
+                    MyBoxLayout:
+                        orientation: 'horizontal'
+                        MDBasicLabel:
+                            size_hint: None,None
+                            text: app.LangWords["Category"]
+                        MDBasicLabel:
+                            size_hint: None,None
+                            text: ":"
+                        MyMDDropDownItem:
+                            id: drop_item_category
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            text: app.LangWords["All"]
+                            on_release: app.MoneyCategorys.open()
         MDMyCard:
             size_hint_y: 0.25
             orientation: 'vertical'
@@ -212,4 +228,9 @@
                 text: app.LangWords["Cancel"]
                 on_release: app.changeToScreen("main_screen", "right")
 <SettingsScreen>:
-    
+    MDMyCard:
+        size_hint_y: 0.25
+        orientation: 'vertical'
+        MDMyButtton:
+            text: app.LangWords["Cancel"]
+            on_release: app.changeToScreen("main_screen", "right")

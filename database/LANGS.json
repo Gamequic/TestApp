@@ -36,7 +36,8 @@
         "AddMoney": "Agragar dinero",
         "RemoveMoney": "Quitar dinero",
         "All": "Todos",
-        "Settings": "Configuraciones"
+        "Settings": "Configuraciones",
+        "Title": "Titulo"
     },
 "ENG": 
     {
@@ -75,6 +76,7 @@
         "AddMoney": "Add money",
         "RemoveMoney": "Remove money",
         "All": "All",
-        "Settings": "Settings"
+        "Settings": "Settings",
+        "Title": "Title"
     }
 }
